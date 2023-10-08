@@ -1,0 +1,47 @@
+[
+    {
+        "id": "2f975edc-3a87-4418-9ad7-8216e0402d8a",
+        "comment": "",
+        "command": "open",
+        "target": "/accounts/dashboard/#/chapter-318/event-59969/manage",
+        "targets": [],
+        "value": ""
+    },
+    {
+        "id": "34a845f2-e3a4-434a-a0de-4f9b80aba075",
+        "comment": "",
+        "command": "setWindowSize",
+        "target": "1440x875",
+        "targets": [],
+        "value": ""
+    },
+    {
+        "id": "b554619e-2e6d-44c0-8945-23df05289505",
+        "comment": "",
+        "command": "click",
+        "target": "css=.Button-Button__button_180yz",
+        "targets": [
+            [
+                "css=.Button-Button__button_180yz",
+                "css:finder"
+            ],
+            [
+                "xpath=//button[@type='submit']",
+                "xpath:attributes"
+            ],
+            [
+                "xpath=//div[@id='react-main-dashboard-root']/div/div[3]/div/div/div[2]/div/div/div[2]/div/div/div/div[2]/div/div[2]/button",
+                "xpath:idRelative"
+            ],
+            [
+                "xpath=//div[2]/button",
+                "xpath:position"
+            ],
+            [
+                "xpath=//button[contains(.,' Add attendee')]",
+                "xpath:innerText"
+            ]
+        ],
+        "value": ""
+    }
+]
