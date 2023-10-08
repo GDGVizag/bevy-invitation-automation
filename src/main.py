@@ -2,9 +2,10 @@
 This utility generates a Selenium IDE script for adding attendees to an event on Bevy platform
 """
 
-import json
+import copy
 
 import serializer
+import deserializer
 import utils
 
 # Serialize the contents of base.json into a dictionary
@@ -40,12 +41,99 @@ class Main:
         """
         self.base['tests'][0]['commands'] = self.start_commands
 
+    def generate_first_name_command(self, first_name):
+        """
+        Generates type first name command
+        """
+        command = copy.deepcopy(self.command_template)
+        command['id'] = utils.generate_uuid()
+        command['command'] = 'type'
+        command['target'] = 'id=s1vcua'
+        command['targets'] = [
+            ["id=s1vcua", "id"],
+            ["name=first_name", "name"],
+            ["css=#s1vcua", "css:finder"],
+            ["xpath=//input[@id='s1vcua']", "xpath:attributes"],
+            ["xpath=//div[@id='overlay-container']/div/div/div[2]/form/div/div/div/div/div/input", "xpath:idRelative"],
+            ["xpath=//form/div/div/div/div/div/input", "xpath:position"]
+        ]
+        command['value'] = first_name
+        return command
+
+    def generate_last_name_command(self, last_name):
+        """
+        Generates type last name command
+        """
+        command = copy.deepcopy(self.command_template)
+        command['id'] = utils.generate_uuid()
+        command['command'] = 'type'
+        command['target'] = 'id=s1yx3r'
+        command['targets'] = [
+            ["id=s1yx3r", "id"],
+            ["name=last_name", "name"],
+            ["css=#s1yx3r", "css:finder"],
+            ["xpath=//input[@id='s1yx3r']", "xpath:attributes"],
+            ["xpath=//div[@id='overlay-container']/div/div/div[2]/form/div/div[2]/div/div/div/input", "xpath:idRelative"],
+            ["xpath=//div[2]/div/div/div/input", "xpath:position"]
+        ]
+        command['value'] = last_name
+        return command
+
+    def generate_email_command(self, email):
+        """
+        Generates type email command
+        """
+        command = copy.deepcopy(self.command_template)
+        command['id'] = utils.generate_uuid()
+        command['command'] = 'type'
+        command['target'] = 'id=s2v3vd'
+        command['targets'] = [
+            ["id=s2v3vd", "id"],
+            ["name=email", "name"],
+            ["css=#s2v3vd", "css:finder"],
+            ["xpath=//input[@id='s2v3vd']", "xpath:attributes"],
+            ["xpath=//div[@id='overlay-container']/div/div/div[2]/form/div/div[3]/div/div/div/input", "xpath:idRelative"],
+            ["xpath=//div[3]/div/div/div/input", "xpath:position"]
+        ]
+        command['value'] = email
+        return command
+
+    def generate_save_and_add_command(self):
+        """
+        Generates click command for Save and Add More
+        """
+        command = copy.deepcopy(self.command_template)
+        command['id'] = utils.generate_uuid()
+        command['command'] = 'click'
+        command['target'] = 'css=.Button-Button__outlined_bddio'
+        command['targets'] = [
+            ["css=.Button-Button__outlined_bddio", "css:finder"],
+            ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+            ["xpath=//div[@id='overlay-container']/div/div/div[2]/form/div/div[6]/div/div[2]/div/button", "xpath:idRelative"],
+            ["xpath=//div[2]/div/button", "xpath:position"],
+            ["xpath=//button[contains(.,'Save and add more')]", "xpath:innerText"]
+        ]
+        return command
+
     def add_attendees_commands(self):
         """
         Add commands to type attendee first name, last name and email for all attendees.
-        Click Save and Add More after typiing
+        Click Save and Add More after typing
         """
-        # TODO: Load the csv file (load the specified file or load the default csv file)
+        attendees_list = serializer.AttendeeCSVSerializer().get_attendees()
+        for attendee in attendees_list:
+            self.base['tests'][0]['commands'].append(
+                self.generate_first_name_command(attendee['first_name'])
+            )
+            self.base['tests'][0]['commands'].append(
+                self.generate_last_name_command(attendee['last_name'])
+            )
+            self.base['tests'][0]['commands'].append(
+                self.generate_email_command(attendee['email'])
+            )
+            self.base['tests'][0]['commands'].append(
+                self.generate_save_and_add_command()
+            )
 
     def add_end_commands(self):
         """
@@ -57,9 +145,8 @@ class Main:
         """
         generates the .side script for Selenium IDE
         """
-        with open("generated/sample.side", 'w', encoding='utf-8') as file:
-            json.dump(self.base, file)
-
+        deserialize = deserializer.JSONDeserializer()
+        deserialize.write_json_to_file("generated/sample.side", self.base)
 
 if __name__ == '__main__':
     Main()

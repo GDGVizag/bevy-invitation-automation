@@ -3,6 +3,7 @@ Serializer classes for json and csv files from source
 """
 
 import json
+import csv
 
 class JSONSerializer:
     """
@@ -50,3 +51,26 @@ class JSONSerializer:
         fetches the current config
         """
         return self.load_json("./config.json")
+
+class AttendeeCSVSerializer:
+    """
+    Class for serializing attendess CSV list
+    """
+
+    def __init__(self):
+        self.attendees = []
+        with open('./samples/attendees.csv', newline='', encoding='utf-8') as csv_file:
+            csv_reader = csv.reader(csv_file, skipinitialspace=True)
+            next(csv_reader, None)
+            for row in csv_reader:
+                self.attendees.append({
+                    'first_name': row[0],
+                    'last_name': row[1],
+                    'email' : row[2]
+                })
+
+    def get_attendees(self):
+        """
+        returns the attendees list
+        """
+        return self.attendees
