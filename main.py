@@ -1,8 +1,5 @@
 # Handle cases only with 2 or more attendees
 
-# 1. Ask for csv file location from the user
-# 2. Place the generated json in generated folder with .side extension
-
 # Serialize the contents of base.json into a dictionary
 
 # Generate and set IDs:
@@ -14,6 +11,9 @@
 
 # prepend start_commands.json
 
-# Generate commands for adding attendees iteratively
+# Adding attendees
+# Load the csv file (load the specified file or load the default csv file)
 
 # append end_commands.json
+
+# export the json to /generated with .side extension
