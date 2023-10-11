@@ -114,6 +114,16 @@ class Main:
             ["xpath=//button[contains(.,'Save and add more')]", "xpath:innerText"]
         ]
         return command
+    
+    def generate_pause_command(self, target=4000):
+        """
+        Generates command pausing the execution for the given number of seconds
+        """
+        command = copy.deepcopy(self.command_template)
+        command['id'] = utils.generate_uuid()
+        command['command'] = 'pause'
+        command['target'] = str(target)
+        return command
 
     def add_attendees_commands(self):
         """
@@ -134,6 +144,10 @@ class Main:
             self.base['tests'][0]['commands'].append(
                 self.generate_save_and_add_command()
             )
+            self.base['tests'][0]['commands'].append(
+                self.generate_pause_command()
+            )
+        print("Generated script to add", len(attendees_list), "attendees.")
 
     def add_end_commands(self):
         """
