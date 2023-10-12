@@ -26,40 +26,40 @@ class JSONSerializer:
         """
         fetches the base template
         """
-        return self.load_json("templates/base.json")
+        return self.load_json("../templates/base.json")
 
     def get_start_commands(self):
         """
         fetches a list of start commands
         """
-        return self.load_json("templates/start_commands.json")
+        return self.load_json("../templates/start_commands.json")
 
     def get_end_commands(self):
         """
         fetches a list of end commands
         """
-        return self.load_json("templates/end_commands.json")
+        return self.load_json("../templates/end_commands.json")
 
     def get_command_template(self):
         """
         fetches the command template
         """
-        return self.load_json("templates/command.json")
+        return self.load_json("../templates/command.json")
 
     def get_config(self):
         """
         fetches the current config
         """
-        return self.load_json("./config.json")
+        return self.load_json("../config.json")
 
 class AttendeeCSVSerializer:
     """
     Class for serializing attendess CSV list
     """
 
-    def __init__(self):
+    def __init__(self, csv_file_name):
         self.attendees = []
-        with open('./samples/attendees.csv', newline='', encoding='utf-8') as csv_file:
+        with open('../samples/' + csv_file_name, newline='', encoding='utf-8') as csv_file:
             csv_reader = csv.reader(csv_file, skipinitialspace=True)
             next(csv_reader, None)
             for row in csv_reader:

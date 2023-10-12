@@ -1,4 +1,5 @@
 import json
+import os, os.path
 
 class JSONDeserializer:
     """
@@ -9,5 +10,7 @@ class JSONDeserializer:
         """
         Writes given data to file as JSON
         """
-        with open(path, 'w', encoding='utf-8') as file:
+        if not os.path.exists("generated/"):
+         os.mkdir("generated/")
+        with open(path, 'w+', encoding='utf-8') as file:
             json.dump(data, file)

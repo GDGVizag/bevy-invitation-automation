@@ -13,8 +13,11 @@ class Main:
     """
     Driver class
     """
-
+    
     def __init__(self) -> None:
+        print("Enter the name of the csv file")
+        csv_file_path = input()
+        event_name = csv_file_path.replace(".csv", "")
         serialize = serializer.JSONSerializer()
         self.base = serialize.get_base_dict()
         self.command_template = serialize.get_command_template()
@@ -31,9 +34,9 @@ class Main:
         self.base['urls'] = ["https://gdg.community.dev"]
         
         self.set_start_commands()
-        self.add_attendees_commands()
+        self.add_attendees_commands(csv_file_path)
         self.add_end_commands()
-        self.generate_script()
+        self.generate_script(event_name)
 
     def set_start_commands(self):
         """
@@ -125,12 +128,13 @@ class Main:
         command['target'] = str(target)
         return command
 
-    def add_attendees_commands(self):
+    def add_attendees_commands(self, csv_file_path):
         """
         Add commands to type attendee first name, last name and email for all attendees.
         Click Save and Add More after typing
         """
-        attendees_list = serializer.AttendeeCSVSerializer().get_attendees()
+        
+        attendees_list = serializer.AttendeeCSVSerializer(csv_file_path).get_attendees()
         for attendee in attendees_list:
             self.base['tests'][0]['commands'].append(
                 self.generate_first_name_command(attendee['first_name'])
@@ -155,12 +159,12 @@ class Main:
         """
         self.base['tests'][0]['commands'] += self.end_commands
 
-    def generate_script(self):
+    def generate_script(self, event_name):
         """
         generates the .side script for Selenium IDE
         """
         deserialize = deserializer.JSONDeserializer()
-        deserialize.write_json_to_file("generated/sample.side", self.base)
+        deserialize.write_json_to_file("generated/{output}.side".format(output=event_name), self.base)
 
 if __name__ == '__main__':
     Main()
