@@ -4,6 +4,7 @@ Serializer classes for json and csv files from source
 
 import json
 import csv
+import re
 
 class JSONSerializer:
     """
@@ -61,13 +62,44 @@ class AttendeeCSVSerializer:
         self.attendees = []
         with open('./samples/attendees.csv', newline='', encoding='utf-8') as csv_file:
             csv_reader = csv.reader(csv_file, skipinitialspace=True)
-            next(csv_reader, None)
-            for row in csv_reader:
+            headers = next(csv_reader, None)
+
+            self.validate_file_format(headers)
+
+            for line,row in enumerate(csv_reader, start=1):
+                self.validate_row(row, line)
                 self.attendees.append({
                     'first_name': row[0],
                     'last_name': row[1],
                     'email' : row[2]
                 })
+    
+    def validate_file_format(self, headers):
+        """
+        Validates the CSV file format
+        """
+
+        #check file data
+        if(headers) == None:
+            raise ValueError('The file is empty')
+
+        #check number of columns
+        if(len(headers)) != 3:
+            raise ValueError('The file must have exactly three columns')
+        
+
+    def validate_row(self, row, line):
+        """
+        Validates the row format
+        """
+
+        #check the first and last name
+        if not row[0] or not row[1]:
+            raise ValueError(f'Invalid format found on line {line}. The first name and last name cannot be empty')
+
+        # Check the email address
+        if not re.match(r'^.+@.+\..+$', row[2]):
+            raise ValueError(f'Invalid format found on line {line}. Invalid email address')
 
     def get_attendees(self):
         """
