@@ -3,13 +3,17 @@
 """
 import copy
 import utils
+import serializer
 
 
 
 class CommandGenerator:
 
     def __init__(self) -> None:
+        serialize = serializer.JSONSerializer()
         self.commands = []
+        self.command_template = serialize.get_command_template()
+
 
     def add_command(self, command):
         self.commands.append(command)

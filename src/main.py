@@ -26,11 +26,11 @@ class Main:
 
         self.command_generator = command_generator.CommandGenerator()
         # Create instances of the generate_* methods
-        self.generate_first_name_command = command_generator.generate_first_name_command()
-        self.generate_last_name_command = command_generator.generate_last_name_command()
-        self.generate_email_command = command_generator.generate_email_command()
-        self.generate_save_and_add_command = command_generator.generate_save_and_add_command()
-        self.generate_pause_command = command_generator.generate_pause_command()
+        self.generate_first_name_command = self.command_generator.generate_first_name_command
+        self.generate_last_name_command = self.command_generator.generate_last_name_command
+        self.generate_email_command = self.command_generator.generate_email_command
+        self.generate_save_and_add_command = self.command_generator.generate_save_and_add_command
+        self.generate_pause_command = self.command_generator.generate_pause_command
 
         self.base['id'] = utils.generate_uuid()
         self.base['name'] = self.config['event_name']
