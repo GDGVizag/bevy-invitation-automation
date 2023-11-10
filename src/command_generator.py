@@ -13,10 +13,6 @@ class CommandGenerator:
         serialize = serializer.JSONSerializer()
         self.commands = []
         self.command_template = serialize.get_command_template()
-
-
-    def add_command(self, command):
-        self.commands.append(command)
     
     def generate_first_name_command(self, first_name):
         """

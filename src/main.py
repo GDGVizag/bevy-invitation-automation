@@ -2,8 +2,6 @@
 This utility generates a Selenium IDE script for adding attendees to an event on Bevy platform
 """
 
-import copy
-
 import serializer
 import deserializer
 import utils
@@ -25,12 +23,6 @@ class Main:
         self.config = serialize.get_config()
 
         self.command_generator = command_generator.CommandGenerator()
-        # Create instances of the generate_* methods
-        self.generate_first_name_command = self.command_generator.generate_first_name_command
-        self.generate_last_name_command = self.command_generator.generate_last_name_command
-        self.generate_email_command = self.command_generator.generate_email_command
-        self.generate_save_and_add_command = self.command_generator.generate_save_and_add_command
-        self.generate_pause_command = self.command_generator.generate_pause_command
 
         self.base['id'] = utils.generate_uuid()
         self.base['name'] = self.config['event_name']
@@ -59,19 +51,19 @@ class Main:
         attendees_list = serializer.AttendeeCSVSerializer().get_attendees()
         for attendee in attendees_list:
             self.base['tests'][0]['commands'].append(
-                self.generate_first_name_command(attendee['first_name'])
+                self.command_generator.generate_first_name_command(attendee['first_name'])
             )
             self.base['tests'][0]['commands'].append(
-                self.generate_last_name_command(attendee['last_name'])
+                self.command_generator.generate_last_name_command(attendee['last_name'])
             )
             self.base['tests'][0]['commands'].append(
-                self.generate_email_command(attendee['email'])
+                self.command_generator.generate_email_command(attendee['email'])
             )
             self.base['tests'][0]['commands'].append(
-                self.generate_save_and_add_command()
+                self.command_generator.generate_save_and_add_command()
             )
             self.base['tests'][0]['commands'].append(
-                self.generate_pause_command()
+                self.command_generator.generate_pause_command()
             )
         print("Generated script to add", len(attendees_list), "attendees.")
 
